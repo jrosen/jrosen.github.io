@@ -1,0 +1,135 @@
+# Site Settings
+title: "Joshua Rosen"
+subtitle: "MLOps Engineer"
+description: "Personal website of Joshua Rosen - MLOps Engineer with experience in Software Development, DevOps, and Cloud Engineering"
+url: "https://jjrosen.net"
+baseurl: ""
+
+# Author Settings
+author:
+  name: "Joshua Rosen"
+  email: "joshuajrosen@gmail.com"
+  bio: "MLOps Engineer with a background in Software Development, DevOps, and Cloud Engineering"
+  location: "San Francisco, CA"
+  avatar: "/images/avatar.jpg"
+  social:
+    github: jrosen
+    linkedin: jjrosen
+    twitter: jrosen
+
+# Build Settings
+markdown: kramdown
+permalink: /:title/
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-paginate-v2
+
+# Collections
+collections:
+  projects:
+    output: true
+    permalink: /projects/:path/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      author_profile: true
+  - scope:
+      path: ""
+      type: projects
+    values:
+      layout: project
+      author_profile: true
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: page
+      author_profile: true
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .sass-cache
+  - .jekyll-cache
+  - .jekyll-metadata
+  - .git
+  - .gitignore
+  - .ruby-version
+  - .ruby-gemset
+  - .DS_Store
+  - .idea
+  - .vscode
+
+# Custom Settings
+theme_color: "#4a89dc"
+text_color: "#333333"
+background_color: "#ffffff"
+
+site: Personal Jekyll Theme
+
+collections:
+  pages:
+    output: true
+    permalink: /:name
+  posts:
+    output: true
+    permalink: /blog/:slug
+  projects:
+    output: true
+    permalink: /project/:slug
+
+defaults:
+  -
+    scope:
+      path: ""
+    values:
+      layout: "default"
+  -
+    scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page"
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  -
+    scope:
+      path: ""
+      type: "projects"
+    values:
+      layout: "project"
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  
+sass:
+  style: compressed
+
+pagination:
+  enabled: true
+  per_page: 6
+  title: ':title'
+  limit: 0
+  sort_field: 'date'
+  sort_reverse: true
+  trail:
+    before: 2
+    after: 2
+  indexpage: 'blog'
+  permalink: '/blog/page/:num/'
+  
