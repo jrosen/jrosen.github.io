@@ -5,101 +5,175 @@ description: A Kubernetes-native service for orchestrating machine learning mode
 featured_image: /images/demo/model-broker.jpg
 ---
 
-# Model Broker: ML Model Orchestration at Scale
+# Building a Smarter Model Broker: Evolving ML Inference at Scale
 
-## Overview
+In my role as Senior MLOps Engineer at Best Egg, I led the development of a system we call **Model Broker**—a centralized orchestration layer for machine learning model inference across the organization. What began as a simple way to unify how downstream services consumed ML predictions evolved into a foundational component of our ML platform. Today, Model Broker enables scalable, low-latency, and feature-aware model execution across a variety of teams and use cases.
 
-Model Broker is a sophisticated model orchestration service I developed while serving as Senior MLOps Engineer at Best Egg. It serves as a central hub for managing and executing machine learning model inference across the organization, providing a unified interface for consuming services to access our ML capabilities.
+This post walks through the evolution of the system, key architectural decisions, and the core features that make it powerful.
 
-## Architecture Evolution
+---
+
+## From Serverless to Kubernetes-Native: An Architectural Evolution
 
 ### Initial Serverless Implementation
-The first iteration of Model Broker was built as a serverless application using AWS Step Functions. This architecture provided:
-- Automatic scaling
-- Pay-per-use cost model
-- Integration with AWS services
 
-However, this approach faced challenges with:
-- Cold start latencies
-- Complex state management
-- Limited control over execution environment
+The first version of Model Broker was built using AWS Step Functions. This serverless design offered several early benefits:
+
+- **Automatic scaling** based on request volume  
+- **Pay-per-use cost structure**, making it financially efficient for lower-volume models  
+- **Tight integration with AWS services**, streamlining our early workflows  
+
+But as we scaled up, the limitations became too significant to ignore:
+
+- **Cold start latency** was unacceptable for real-time applications  
+- **State management** within Step Functions became complex and brittle  
+- **Execution environment control** was minimal, limiting optimization and monitoring  
+
+We needed something more performant and flexible—without giving up the abstraction benefits Model Broker provided.
 
 ### Kubernetes-Native Redesign
-The current version represents a significant architectural shift to a Kubernetes-native service, addressing the limitations of the serverless approach. Key improvements include:
-- Reduced latency through persistent service deployment
-- Better resource utilization
-- Enhanced monitoring and observability
-- Native integration with Kubernetes ecosystem
 
-## Key Features
+The second iteration of Model Broker was a complete architectural overhaul. We transitioned to a **Kubernetes-native implementation**, which addressed our key limitations and unlocked new capabilities:
+
+- **Persistent services** eliminated cold starts and dramatically reduced latency  
+- **Better resource control** allowed for smarter utilization and tuning  
+- **Native observability** improved debugging, metrics, and alerting  
+- **Seamless integration** with Kubernetes-native tools and operators  
+
+This shift brought us closer to a platform model, where deploying, updating, and monitoring models became far more reliable and repeatable.
+
+---
+
+## Core Features of Model Broker
 
 ### Intelligent Model Routing
-- Dynamic model selection based on request path
-- Support for multiple model versions
-- Flexible model deployment strategies
 
-### Feature Management
-- Integration with Feature Platform
-- Dynamic feature computation
-- Efficient feature caching and retrieval
-- **Consumer-Independent Feature Management**: One of the most powerful aspects of the Model Broker is its tight integration with our Feature Platform. This integration creates a crucial abstraction layer where:
-  - Consumers only need to provide basic input data
-  - Model Broker automatically determines and fetches all required features for each model
-  - Models can be retrained and redeployed with new feature requirements without consumer coordination
-  - This decoupling enables rapid model iteration and deployment without impacting downstream services
+Model Broker intelligently routes inference requests to the correct model version based on the request path and metadata:
+
+- **Dynamic version selection** ensures the right model is used per request context  
+- **Multiple versions** of the same model can coexist  
+- **Custom routing logic** supports rollout strategies, A/B testing, and shadow deployment  
+
+This routing layer abstracts away the complexity of model versioning from the consumer entirely.
+
+---
+
+### Feature Management and Abstraction
+
+One of Model Broker’s most transformative capabilities is **decoupling feature engineering from consuming services**.
+
+- Consumers send **basic input data** (e.g., customer ID, loan ID)  
+- Model Broker fetches and computes all **required features** for the specific model being invoked  
+- Models can **evolve independently** of downstream services  
+
+Thanks to integration with our internal **Feature Platform**, features are dynamically computed, cached, and retrieved as needed. This design dramatically reduces coordination costs between data scientists and application teams.
+
+**The result?**
+
+- Consumers don’t need to know what features the model requires  
+- Models can be retrained, redeployed, or updated with new features—**no consumer code changes necessary**  
+
+---
 
 ### Parallel Model Execution
-- Concurrent model inference
-- Aggregated response payload
-- Optimized resource utilization
 
-### Audit and Compliance
-- Comprehensive logging of all model executions
-- Artifact storage in S3
-- Metadata tracking in DynamoDB
-- Full audit trail for compliance and debugging
+In many use cases, a single request may trigger predictions from **multiple models**. Model Broker supports:
 
-## Technical Implementation
+- **Concurrent execution** across models  
+- **Aggregated responses** returned in a unified payload  
+- **Optimized resource scheduling** to avoid contention and maximize throughput  
+
+This is especially useful in decisioning systems that rely on ensemble or multi-model outputs.
+
+---
+
+### Auditability and Compliance
+
+In a regulated environment, transparency is non-negotiable. Model Broker offers robust observability and traceability features:
+
+- **All executions are logged** with full context  
+- **Artifacts** (inputs, outputs, metadata) are stored in **Amazon S3**  
+- **Execution metadata** is persisted in **DynamoDB**  
+- **Full audit trails** support compliance, debugging, and reproducibility  
+
+This has been essential for supporting both internal audits and external regulatory requirements.
+
+---
+
+## Under the Hood: Technical Implementation
 
 ### Kubernetes Integration
-The service leverages Kubernetes-native features through:
-- Custom Resource Definitions (CRDs) for model definitions
-- Automated model deployment via Kubernetes operators
-- Support for both SageMaker and native Kubernetes deployments
 
-### Model Deployment
-Models can be deployed in two ways:
-1. **SageMaker Endpoints**: For models requiring specialized hardware or SageMaker features
-2. **Kubernetes Services**: For models that can run efficiently in the cluster
+We lean heavily on Kubernetes-native patterns to manage our infrastructure:
 
-### Performance Optimizations
-- Efficient resource allocation
-- Connection pooling
-- Caching strategies
-- Load balancing
+- **Custom Resource Definitions (CRDs)** define model metadata and routing logic  
+- **Kubernetes Operators** automate model lifecycle events (deployments, upgrades, monitoring)  
+- Support for both **in-cluster** and **external** inference backends  
 
-## Impact
+### Flexible Model Hosting
 
-The transition to a Kubernetes-native architecture has resulted in:
-- Significantly reduced latency
-- Improved reliability
-- Better resource utilization
-- Enhanced monitoring capabilities
-- Simplified operational management
-- **Accelerated Model Development**: The consumer-independent feature management system has dramatically improved our model development velocity:
-  - Models can be updated and redeployed without coordinating with consuming services
-  - Data scientists can iterate on models more quickly
-  - New features can be added to models without requiring consumer changes
-  - Reduced deployment complexity and risk
+We support two deployment backends:
 
-## Technologies Used
+1. **AWS SageMaker**  
+   Ideal for models that require GPU acceleration, elastic scaling, or integration with SageMaker pipelines.
 
-- Kubernetes
-- Python
-- AWS SageMaker
-- DynamoDB
-- S3
-- Custom Kubernetes Operators
-- Feature Platform Integration
+2. **Kubernetes Services**  
+   Used for lower-latency, in-cluster models where we want more direct control and observability.
 
-This project demonstrates the evolution of ML infrastructure from serverless to containerized architectures, highlighting the importance of choosing the right deployment strategy based on specific requirements and constraints. The integration with the Feature Platform represents a significant architectural achievement, enabling true independence between model development and consumer services. 
+This flexibility ensures the right balance of **cost**, **performance**, and **capability** for each use case.
+
+---
+
+## Performance and Optimization
+
+As usage grew, we invested in critical optimizations:
+
+- **Connection pooling** to backend inference services  
+- **Aggressive caching** of features and routing rules  
+- **Load balancing** across replicas for throughput and fault tolerance  
+- **Efficient memory allocation** per model based on profiling  
+
+These improvements helped us scale horizontally without increasing latency or cost disproportionately.
+
+---
+
+## Impact and Business Value
+
+The move to a Kubernetes-native Model Broker was a turning point:
+
+- **Latency dropped** significantly across all endpoints  
+- **System reliability** improved, with fewer timeouts and edge case failures  
+- **Monitoring and alerts** became proactive instead of reactive  
+- **Operational complexity decreased**, thanks to automation via CRDs and GitOps  
+
+But most importantly, the **model development lifecycle** was transformed:
+
+- Data scientists can **deploy updates without breaking consumers**  
+- New models can be rolled out faster  
+- Features can evolve independently from the services that consume them  
+
+This autonomy unlocked a virtuous cycle of faster experimentation, more accurate models, and better outcomes for the business.
+
+---
+
+## Tech Stack
+
+Model Broker is built on a robust stack of tools:
+
+- **Kubernetes** – orchestration and service management  
+- **Python** – core service logic and model interfaces  
+- **AWS SageMaker** – optional hosting for specialized models  
+- **Amazon S3** – artifact and log storage  
+- **Amazon DynamoDB** – metadata and execution tracking  
+- **Custom Kubernetes Operators** – automation of deployment workflows  
+- **Feature Platform Integration** – real-time feature resolution and caching  
+
+---
+
+## Final Thoughts
+
+Model Broker is more than a routing layer—it’s a **platform for scalable, maintainable, and consumer-agnostic model inference**. By abstracting feature computation, model versioning, and execution environments, we’ve dramatically simplified the experience of deploying machine learning at scale.
+
+This project taught us a lot about the tradeoffs between serverless and containerized architectures, the importance of observability, and the power of true decoupling between data science and engineering.
+
+And we’re just getting started.
