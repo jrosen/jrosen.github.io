@@ -114,11 +114,9 @@ We lean heavily on Kubernetes-native patterns to manage our infrastructure:
 
 We support two deployment backends:
 
-1. **AWS SageMaker**  
-   Ideal for models that require GPU acceleration, elastic scaling, or integration with SageMaker pipelines.
+1. **AWS SageMaker** - Ideal for models that require GPU acceleration, elastic scaling, or integration with SageMaker pipelines.
 
-2. **Kubernetes Services**  
-   Used for lower-latency, in-cluster models where we want more direct control and observability.
+2. **Kubernetes Services** - Used for lower-latency, in-cluster models where we want more direct control and observability.
 
 This flexibility ensures the right balance of **cost**, **performance**, and **capability** for each use case.
 
