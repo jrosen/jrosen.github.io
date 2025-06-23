@@ -1,11 +1,11 @@
 ---
-title: Model Broker
-subtitle: A High-Performance Model Orchestration Service
-description: A Kubernetes-native service for orchestrating machine learning model inference at scale, built during my time as Senior MLOps Engineer at Best Egg.
-featured_image: /images/demo/model-broker.jpg
+layout: post
+title: "Building a Smarter Model Broker: Evolving ML Inference at Scale"
+date: 2025-06-20
+author: Josh Rosen
+tags: [mlops, kubernetes, sagemaker, devops, infrastructure, best-egg]
+description: How we evolved Best Egg's model broker from serverless roots to a high-performance Kubernetes-native orchestration platform for machine learning inference.
 ---
-
-# Building a Smarter Model Broker: Evolving ML Inference at Scale
 
 In my role as Senior MLOps Engineer at Best Egg, I led the development of a system we call **Model Broker**—a centralized orchestration layer for machine learning model inference across the organization. What began as a simple way to unify how downstream services consumed ML predictions evolved into a foundational component of our ML platform. Today, Model Broker enables scalable, low-latency, and feature-aware model execution across a variety of teams and use cases.
 
@@ -114,9 +114,11 @@ We lean heavily on Kubernetes-native patterns to manage our infrastructure:
 
 We support two deployment backends:
 
-1. **AWS SageMaker** - Ideal for models that require GPU acceleration, elastic scaling, or integration with SageMaker pipelines.
+1. **AWS SageMaker**  
+   Ideal for models that require GPU acceleration, elastic scaling, or integration with SageMaker pipelines.
 
-2. **Kubernetes Services** - Used for lower-latency, in-cluster models where we want more direct control and observability.
+2. **Kubernetes Services**  
+   Used for lower-latency, in-cluster models where we want more direct control and observability.
 
 This flexibility ensures the right balance of **cost**, **performance**, and **capability** for each use case.
 
