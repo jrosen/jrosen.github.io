@@ -17,25 +17,24 @@ Versatile DevOps and Cloud Engineering leader with over 15 years of experience s
 - **Infrastructure as Code**: Terraform, CloudFormation, Helm, Ansible, Chef, Puppet
 - **Containers & Orchestration**: Kubernetes (EKS, bare metal, microk8s), Docker, Traefik
 - **CI/CD & Automation**: GitHub Actions, Octopus Deploy, Jenkins, CircleCI, CodeBuild, Argo Workflows, Slackbots, GitOps, Backstage
-- **MLOps**: Metaflow, Argo Events, Model Broker, champion/challenger retraining
+- **MLOps**: Metaflow/Outerbounds, Argo Events, Model Broker, champion/challenger retraining
 - **Security & Compliance**: PCI-DSS 4.0, SOC 1/2, HIPAA, IAM, Vault
 - **Monitoring**: Datadog, CloudWatch, PagerDuty, xMatters
 - **Languages**: Python, Ruby, PHP, Shell scripting
 - **Version Control**: GitHub, GitLab, GitFlow, trunk-based development
 - **Leadership**: Team building, vendor management, cross-functional collaboration, mentoring
-- **Databases**: MySQL, PostgreSQL, MongoDB, S3
+- **Databases**: MySQL, PostgreSQL, MongoDB, S3, DynamoDB
 
 ## Work Experience
 
 ### Best Egg, Wilmington, DE
 **Senior MLOps Engineer**  
 *February 2024 – Present*
-- Led 8–10 DevOps/DevSecOps engineers supporting 200+ tech staff.
-- Built an internal dev platform using GitHub Actions, Octopus Deploy, Terraform, Vault, Datadog.
-- Automated project provisioning via Slackbot interfacing with GitHub, DockerHub, Octopus, Terraform.
-- Maintained audit-ready compliance (PCI-DSS 4.0, SOC 1/2).
-- Managed vendor relationships: GitHub, HashiCorp, Datadog.
-- Technologies: AWS, Kubernetes, Terraform, GitHub Actions, Octopus Deploy, Vault, Azure AD, Datadog, Python.
+- Led a small team of Engineers supporting 20 Data Scientists
+- Developed a model platform supporting models served using batch processes as well as the Model Broker service
+- Led Office Hours meetings to help support the Data Scientists directly
+- Expertise in Metaflow and the Outerbounds platform
+- Developed services and processes to support AI/LLM models
 
 ### Best Egg, Wilmington, DE
 **Senior Director of DevOps / Platform Engineering**  

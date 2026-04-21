@@ -68,6 +68,8 @@ I believe in:
 ### Education
 - **Rowan University** (2001)
   - Bachelor of Science in Computer Science
+- **Indiana University** (2008)
+  - Continuing Education in Human Computer Interaction
 
 ### Certifications
 - **AWS Certifications**
